@@ -1,0 +1,42 @@
+    name: Chattery
+    main: net.mcforge.chattery.system.Chattery
+    version: 0.0.1
+    author: MCForge
+    authors: [Arrem, Campeze, 501st_commander]
+    website: http://www.mcforge.net
+    prefix: [Chattery]
+       
+    commands:
+        global:
+            description: Sends a message to the global chat.
+            usage: /global
+            permission: chattery.use
+            permission-message: You don't have the permission to use this command!
+            aliases: [gc]
+        globalrules:
+            description: Shows the rules of the Global Chat.
+            usage: /globalrules
+            permission: chattery.use
+            permission-message: You don't have the permission to use this command!
+            aliases: [gcrules]
+        globalagree:
+            description: Agree to the rules of the Global Chat.
+            usage: /globalagree
+            permission: chattery.use
+            permission-message: You don't have the permission to use this command!
+            aliases: [gcagree, globalaccept, gcaccept]
+
+    permissions:
+        chattery.*:
+            description: Gives access to all Chattery commands.
+            default: false
+            children:
+                chattery.see:
+                    description: Allows users to see the global chat.
+                    default: true
+                chattery.use:
+                    description: Allows users to use the global chat commands.
+                    default: true
+                chattery.admin:
+                    description: Allows users to use the administration commands.
+                    default: op
