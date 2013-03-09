@@ -9,15 +9,21 @@ package net.mcforge.chattery.system;
 
 import net.mcforge.chattery.commands.CmdGlobalChat;
 import net.mcforge.chattery.commands.CmdGlobalRules;
+import net.mcforge.chattery.database.ISQL;
+import net.mcforge.chattery.database.SQLite;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Chattery extends JavaPlugin {
+	private ISQL database;
+	private PlayerHandler handler;
 	private final String VERSION = "0.0.1";
 	
 	@Override
 	public void onEnable() {
-		Database.init();
+		database = new SQLite();
+		database.init();
+		handler = new PlayerHandler(this);
 		
 		getCommand("global").setExecutor(new CmdGlobalChat());
 		getCommand("globalrules").setExecutor(new CmdGlobalRules());
@@ -28,5 +34,13 @@ public final class Chattery extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		getLogger().info("MCForge Chattery unloaded!");
+	}
+	
+	public ISQL getData() {
+		return database;
+	}
+	
+	public PlayerHandler getPlayerHandler() {
+		return handler;
 	}
 }
