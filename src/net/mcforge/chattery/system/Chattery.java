@@ -10,7 +10,7 @@ package net.mcforge.chattery.system;
 import net.mcforge.chattery.commands.CmdGlobalChat;
 import net.mcforge.chattery.commands.CmdGlobalRules;
 import net.mcforge.chattery.database.ISQL;
-import net.mcforge.chattery.database.SQLite;
+import net.mcforge.chattery.database.MySQL;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,7 +21,7 @@ public final class Chattery extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		database = new SQLite();
+		database = new MySQL();
 		database.init();
 		handler = new PlayerHandler(this);
 		
