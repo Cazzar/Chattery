@@ -10,23 +10,30 @@ package net.mcforge.chattery.database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
-public interface ISQL {
+import net.mcforge.chattery.system.Chattery;
+
+public abstract class SQL {
+	protected Chattery plugin;
+	
+	public SQL(Chattery plugin) {
+		this.plugin = plugin;
+	}
     
-    void executeQuery(String command);
+    public abstract void executeQuery(String command);
     
-    void executeQuery(String[] commands);
+    public abstract void executeQuery(String[] commands);
     
-    ResultSet fillData(String command);
+    public abstract ResultSet fillData(String command);
     
-    void init();
+    public abstract void init();
     
-    void connect();
+    public abstract void connect();
     
-    void setPrefix(String prefix);
+    public abstract void setPrefix(String prefix);
     
-    String getPrefix();
+    public abstract String getPrefix();
     
-    Connection getConnection();
+    public abstract Connection getConnection();
 
 }
 

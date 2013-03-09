@@ -1,0 +1,14 @@
+#databse.type: The database type you want to use. Either MySQL or SQLite.
+#database.mysql.username: The MySQL username to use.
+#database.mysql.password: The MySQL password to use.
+#database.mysql.ip: The MySQL ip.
+#database.mysql.port: The MySQL port.
+#database.mysql.database: The name of the database to use.
+database:
+    type: MySQL
+    mysql:
+        username: Chattery
+        password: Chattery
+        ip: 127.0.0.1
+        port: 3306
+        database: Chattery

@@ -14,17 +14,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import net.mcforge.chattery.system.Chattery;
+
 import com.mysql.jdbc.Driver;
 
-public class MySQL implements ISQL {
-
-    protected Connection connection;
+public class MySQL extends SQL {
+	protected Connection connection;
     protected String IP;
     protected int port;
     protected String DB;
     protected String prefix;
     protected String username;
     protected String pass;
+    
+    public MySQL(Chattery plugin) {
+		super(plugin);
+	}
 
     @Override
     public void executeQuery(String command) {
@@ -93,66 +98,36 @@ public class MySQL implements ISQL {
             e.printStackTrace();
         }
     }
-    /**
-     * Get the connection
-     * @return java.sql.connection
-     */
+
     @Override
     public Connection getConnection() {
         return connection;
     }
     
-    /**
-     * Get the URL to the mysql server
-     * @return The URL
-     */
     public String getURL() {
         return "jdbc:mysql://" + IP + ":" + port + "/";
     }
     
-    /**
-     * Properties to add to the mysql connection
-     * @return
-     */
     public String getProperties() {
         return "?autoDeserialize=true";
     }
     
-    /**
-     * Set the IP of the MySQL database
-     * @param IP
-     */
     public void setIP(String IP) {
         this.IP = IP;
     }
     
-    /**
-     * Set the port of the MySQL database
-     * @param port
-     */
     public void setPort(int port) {
         this.port = port;
     }
     
-    /**
-     * Get the IP of the MySQL database
-     * @return the IP
-     */
     public String getIP() {
         return IP;
     }
     
-    /**
-     * Get the port of the MySQL database
-     * @return the port
-     */
     public int getPort() {
         return port;
     }
-    /**
-     * Get the URL to the mysql server including the database
-     * @return The URL
-     */
+
     public String getFullURL() {
         return getURL() + DB;
     }
@@ -181,14 +156,13 @@ public class MySQL implements ISQL {
 
 	@Override
 	public void init() {
-		setUsername("MCForge");
-		setPassword("MCForge");
-		setDatabase("Chattery");
-		setIP("127.0.0.1");
-		setPort(3306);
+		setUsername(plugin.getConfig().getString("database.mysql.username"));
+		setPassword(plugin.getConfig().getString("database.mysql.password"));
+		setDatabase(plugin.getConfig().getString("database.mysql.database"));
+		setIP(plugin.getConfig().getString("database.mysql.ip"));
+		setPort(plugin.getConfig().getInt("database.mysql.port"));
 		connect();
 		executeQuery("CREATE TABLE IF NOT EXISTS Player (Name VARCHAR(20), ReadRules TINYINT(1), Agreed TINYINT(1), Ignoring TINYINT(1));");
 	}
 
 }
-

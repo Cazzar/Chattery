@@ -14,7 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLite implements ISQL {
+import net.mcforge.chattery.system.Chattery;
+
+public class SQLite extends SQL {
 	private final static String DATADIR = "plugins" + File.separator + "Chattery" + File.separator;
 	private final static String DATAFILE = DATADIR + "Chattery.db";
 
@@ -22,6 +24,10 @@ public class SQLite implements ISQL {
     private String prefix;
     private String file;
     private final String PATH = "jdbc:sqlite:";
+    
+    public SQLite(Chattery plugin) {
+		super(plugin);
+	}
     
     @Override
     public void executeQuery(String command) {
