@@ -17,6 +17,13 @@ public class PlayerHandler {
 		this.plugin = plugin;
 	}
 	
+	public boolean exists(String playerName) throws SQLException {
+		ResultSet rs = plugin.getSQL().fillData("SELECT * FROM `Player` WHERE `Name` = \'" + playerName + "\'");
+		boolean exists = rs.next();
+		rs.close();
+		return exists;
+	}
+	
 	public boolean readRules(String playerName) throws SQLException {
 		ResultSet rs = plugin.getSQL().fillData("SELECT `ReadRules` FROM `Player` WHERE `Name` = \'" + playerName + "\';");
 		
@@ -72,6 +79,16 @@ public class PlayerHandler {
 	}
 
 	public void addPlayer(String playerName) {
+		try {
+			if (exists(playerName)) {
+				return;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+		
 		String query = "INSERT INTO `Player`(`Name`, `ReadRules`, `Agreed`, `Ignoring`) VALUES (\'" + playerName + "\', 0, 0, 0);";
 		plugin.getSQL().executeQuery(query);
 	}

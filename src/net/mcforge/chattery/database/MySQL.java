@@ -20,139 +20,143 @@ import com.mysql.jdbc.Driver;
 
 public class MySQL extends SQL {
 	protected Connection connection;
-    protected String IP;
-    protected int port;
-    protected String DB;
-    protected String prefix;
-    protected String username;
-    protected String pass;
-    
-    public MySQL(Chattery plugin) {
+	protected String IP;
+	protected int port;
+	protected String DB;
+	protected String prefix;
+	protected String username;
+	protected String pass;
+
+	public MySQL(Chattery plugin) {
 		super(plugin);
 	}
 
-    @Override
-    public void executeQuery(String command) {
-        try {
-            if (connection.isClosed())
-                connect();
-        } catch (SQLException e) {
-            connect();
-        }
-        try {
-            PreparedStatement pstm = connection.prepareStatement(command);
-            pstm.executeUpdate();
-            pstm.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void executeQuery(String command) {
+		try {
+			if (connection.isClosed()) connect();
+		}
+		catch (SQLException e) {
+			connect();
+		}
+		try {
+			PreparedStatement pstm = connection.prepareStatement(command);
+			pstm.executeUpdate();
+			pstm.close();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public void executeQuery(String[] commands) {
-        try {
-            if (connection.isClosed())
-                connect();
-        } catch (SQLException e) {
-            connect();
-        }
-        try {
-            Statement statement = connection.createStatement();
-            for (String s : commands) {
-                try {
-                    statement.executeUpdate(s);
-                }
-                catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            statement.close();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void executeQuery(String[] commands) {
+		try {
+			if (connection.isClosed()) connect();
+		}
+		catch (SQLException e) {
+			connect();
+		}
+		try {
+			Statement statement = connection.createStatement();
+			for (String s : commands) {
+				try {
+					statement.executeUpdate(s);
+				}
+				catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			statement.close();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public ResultSet fillData(String command) {
-        try {
-            if (connection.isClosed())
-                connect();
-        } catch (SQLException e) {
-            connect();
-        }
-        try {
-            return connection.prepareStatement(command).executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+	@Override
+	public ResultSet fillData(String command) {
+		try {
+			if (connection.isClosed()) connect();
+		}
+		catch (SQLException e) {
+			connect();
+		}
+		try {
+			return connection.prepareStatement(command).executeQuery();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-    @Override
-    public void connect() {
-        try {
-            DriverManager.registerDriver(new Driver());
-            connection = DriverManager.getConnection(getURL() + DB + getProperties(), username, pass);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void connect() {
+		try {
+			DriverManager.registerDriver(new Driver());
+			connection = DriverManager.getConnection(getURL() + DB + getProperties(),
+					username, pass);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public Connection getConnection() {
-        return connection;
-    }
-    
-    public String getURL() {
-        return "jdbc:mysql://" + IP + ":" + port + "/";
-    }
-    
-    public String getProperties() {
-        return "?autoDeserialize=true";
-    }
-    
-    public void setIP(String IP) {
-        this.IP = IP;
-    }
-    
-    public void setPort(int port) {
-        this.port = port;
-    }
-    
-    public String getIP() {
-        return IP;
-    }
-    
-    public int getPort() {
-        return port;
-    }
+	@Override
+	public Connection getConnection() {
+		return connection;
+	}
 
-    public String getFullURL() {
-        return getURL() + DB;
-    }
+	public String getURL() {
+		return "jdbc:mysql://" + IP + ":" + port + "/";
+	}
 
-    @Override
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-    
-    @Override
-    public String getPrefix() {
-        return prefix;
-    }
-    
-    public void setUsername(String user) {
-        this.username = user;
-    }
-    
-    public void setPassword(String pass) {
-        this.pass = pass;
-    }
-    
-    public void setDatabase(String DB) {
-        this.DB = DB;
-    }
+	public String getProperties() {
+		return "?autoDeserialize=true";
+	}
+
+	public void setIP(String IP) {
+		this.IP = IP;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	public String getIP() {
+		return IP;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public String getFullURL() {
+		return getURL() + DB;
+	}
+
+	@Override
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
+	@Override
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setUsername(String user) {
+		this.username = user;
+	}
+
+	public void setPassword(String pass) {
+		this.pass = pass;
+	}
+
+	public void setDatabase(String DB) {
+		this.DB = DB;
+	}
 
 	@Override
 	public void init() {
@@ -161,8 +165,13 @@ public class MySQL extends SQL {
 		setDatabase(plugin.getConfig().getString("database.mysql.database"));
 		setIP(plugin.getConfig().getString("database.mysql.ip"));
 		setPort(plugin.getConfig().getInt("database.mysql.port"));
+		if (username.equals("ChatteryDefault") || pass.equals("ChatteryDefault")) {
+			plugin.getLogger().warning("Please configure your MySQL settings in the config.yml file!");
+			plugin.disable();
+			plugin.getPluginLoader().disablePlugin(plugin);
+			return;
+		}
 		connect();
 		executeQuery("CREATE TABLE IF NOT EXISTS Player (Name VARCHAR(20), ReadRules TINYINT(1), Agreed TINYINT(1), Ignoring TINYINT(1));");
 	}
-
 }

@@ -36,4 +36,3 @@ public abstract class SQL {
     public abstract Connection getConnection();
 
 }
-

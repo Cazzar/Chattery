@@ -4,12 +4,12 @@
     author: MCForge
     authors: [Arrem, Campeze, 501st_commander]
     website: http://www.mcforge.net
-    prefix: [Chattery]
+    prefix: Chattery
        
     commands:
         global:
-            description: Sends a message to the global chat.
-            usage: /global
+            description: Sends a message to the Global Chat.
+            usage: /global <message>
             permission: chattery.use
             permission-message: You don't have the permission to use this command!
             aliases: [gc]
@@ -25,6 +25,12 @@
             permission: chattery.use
             permission-message: You don't have the permission to use this command!
             aliases: [gcagree, globalaccept, gcaccept]
+        globalinfo:
+            description: Shows the Global Chat information.
+            usage: /globalinfo
+            permission: chattery.use
+            permission-message: You don't have the permission to use this command!
+            aliases: [gcinfo, globalinformation, gcinformation]
 
     permissions:
         chattery.*:

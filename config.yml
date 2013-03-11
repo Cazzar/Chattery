@@ -4,11 +4,15 @@
 #database.mysql.ip: The MySQL ip.
 #database.mysql.port: The MySQL port.
 #database.mysql.database: The name of the database to use.
+#
+#bot.username: The IRC username of the Global Chat bot
 database:
     type: MySQL
     mysql:
-        username: Chattery
-        password: Chattery
+        username: ChatteryDefault
+        password: ChatteryDefault
         ip: 127.0.0.1
         port: 3306
         database: Chattery
+bot:
+    username: SMP

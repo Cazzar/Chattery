@@ -143,4 +143,3 @@ public class SQLite extends SQL {
 		executeQuery("CREATE TABLE IF NOT EXISTS Player (Name VARCHAR(20), ReadRules TINYINT(1), Agreed TINYINT(1), Ignoring TINYINT(1));");
 	}
 }
-
