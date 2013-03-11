@@ -25,6 +25,12 @@
             permission: chattery.use
             permission-message: You don't have the permission to use this command!
             aliases: [gcagree, globalaccept, gcaccept]
+        globalignore:
+            description: Ignore or unignore messages from Global Chat.
+            usage: /globalignore
+            permission: chattery.use
+            permission-message: You don't have the permission to use this command!
+            aliases: [gcignore]
         globalinfo:
             description: Shows the Global Chat information.
             usage: /globalinfo

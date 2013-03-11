@@ -71,6 +71,8 @@ public final class Chattery extends JavaPlugin {
 		getCommand("global").setExecutor(commandHandler);
 		getCommand("globalrules").setExecutor(commandHandler);
 		getCommand("globalagree").setExecutor(commandHandler);
+		getCommand("globalignore").setExecutor(commandHandler);
+		getCommand("globalinfo").setExecutor(commandHandler);
 		Bukkit.getPluginManager().registerEvents(eventHandler, this);
 		
 		bot = new ForgeIRCBot(this);
@@ -115,8 +117,8 @@ public final class Chattery extends JavaPlugin {
 			form.out().append("# Note that %playername% only works for outgoing messages!");
 			form.out().append("# %message will be replaced by the specified message\r\n");
 			form.out().append("# Your format cannot contain the equals (=) character!\r\n");
-			form.out().append("incoming = >[Global]%username%: %message%\r\n");
-			form.out().append("outgoing = <[Global]%playername%: %message%\r\n");
+			form.out().append("incoming = §6>[Global] %username%:§f %message%\r\n");
+			form.out().append("outgoing = §6<[Global] %playername%:§f %message%\r\n");
 			form.close();
 			return;
 		}

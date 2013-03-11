@@ -46,8 +46,8 @@ public final class ForgeIRCBot {
 	
 	private String username;
 	
-	private String incomingFormat = ">[Global]%username%: %message%"; 
-	private String outgoingFormat = "<[Global]%message%";
+	private String incomingFormat = "§6>[Global] %username%:§f %message%"; 
+	private String outgoingFormat = "§6<[Global] %playername%:§f %message%";
 	
 	public ForgeIRCBot(Chattery plugin) {
 		this.plugin = plugin;
@@ -123,7 +123,7 @@ public final class ForgeIRCBot {
                 }
                 else if (handler.hasCode("433")) {
                 	plugin.getLogger().info("Nickname already in use! Randomizing..");
-                    username = "ForgeBot" + new Random(System.currentTimeMillis()).nextInt(1000000000);
+                    username = "SMP" + new Random(System.currentTimeMillis()).nextInt(1000000000);
                     handler.setNick(username);
                     plugin.getLogger().info("New Global Chat nickname: " + username);
                 }
@@ -156,7 +156,6 @@ public final class ForgeIRCBot {
                         else if (message.startsWith("^GETINFO ")) {
                             if (message.split(" ").length > 1 && message.split(" ")[1].equals(username)) {
                                 handler.sendMessage("^Name: " + Bukkit.getServerName());
-                                handler.sendMessage("^Description: ");
                                 handler.sendMessage("^MoTD: " + Bukkit.getMotd());
                                 handler.sendMessage("^Server version: Bukkit" + Bukkit.getVersion());
                                 handler.sendMessage("^Plugin version: " + plugin.VERSION);

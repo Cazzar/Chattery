@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import net.mcforge.chattery.system.Chattery;
 import net.mcforge.chattery.system.WebUtils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,16 +29,19 @@ public final class CommandHandler implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (cmd.getName().equals("global")) {
+		if (cmd.getName().equalsIgnoreCase("global")) {
 			return cmdGlobal(sender, args);
 		}
-		else if (cmd.getName().equals("globalrules")) {
+		else if (cmd.getName().equalsIgnoreCase("globalrules")) {
 			return cmdGlobalRules(sender);
 		}
-		else if (cmd.getName().equals("globalagree")) {
+		else if (cmd.getName().equalsIgnoreCase("globalagree")) {
 			return cmdGlobalAgree(sender);
 		}
-		else if (cmd.getName().equals("globalinfo")) {
+		else if (cmd.getName().equalsIgnoreCase("globalignore")) {
+			return cmdGlobalIgnore(sender);
+		}
+		else if (cmd.getName().equalsIgnoreCase("globalinfo")) {
 			return cmdGlobalInfo(sender);
 		}
 		return false;
@@ -107,6 +109,13 @@ public final class CommandHandler implements CommandExecutor {
 			}
 			sender.sendMessage("The command to agree to the Global Chat rules is /globalagree");
 		}
+		else if (args[0].equalsIgnoreCase("ignore")) {
+			if (sender instanceof Player) {
+				((Player)sender).performCommand("globalignore");
+				return true;
+			}
+			sender.sendMessage("The command to ignore the Global Chat is /globalignore");
+		}
 		else if (args[0].equalsIgnoreCase("info")) {
 			if (sender instanceof Player) {
 				((Player)sender).performCommand("globalinfo");
@@ -131,8 +140,30 @@ public final class CommandHandler implements CommandExecutor {
 		String format = plugin.getBot().getOutgoingFormat().replace("%username%", plugin.getBot().getNick());
 		format = format.replace("%message%", message).replace("%playername%", sender.getName());
 		
-		plugin.getBot().getIRCHandler().sendMessage(message);
-		Bukkit.getServer().broadcastMessage(format);
+		plugin.getBot().getIRCHandler().sendMessage(sender.getName() + ": " + message);
+		plugin.getBot().getIRCHandler().messagePlayers(format);
+		return true;
+	}
+	
+	private boolean cmdGlobalIgnore(CommandSender sender) {
+		boolean ignoring;
+		try {
+			ignoring = plugin.getPlayerHandler().ignoring(sender.getName());
+		}
+		catch (SQLException e) {
+			sender.sendMessage("An error occured!");
+			e.printStackTrace();
+			return true;
+		}
+		
+		if (ignoring) {
+			sender.sendMessage("You are no longer ignoring the Global Chat!");
+		}
+		else {
+			sender.sendMessage("You are now ignoring the Global Chat!");
+		}
+		
+		plugin.getPlayerHandler().setIgnoring(sender.getName(), !ignoring);
 		return true;
 	}
 	
