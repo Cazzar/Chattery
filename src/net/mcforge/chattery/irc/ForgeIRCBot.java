@@ -21,6 +21,7 @@ import net.mcforge.chattery.system.Chattery;
 import net.mcforge.chattery.system.WebUtils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -46,8 +47,8 @@ public final class ForgeIRCBot {
 	
 	private String username;
 	
-	private String incomingFormat = "§6>[Global] %username%:§f %message%"; 
-	private String outgoingFormat = "§6<[Global] %playername%:§f %message%";
+	private String incomingFormat = ChatColor.GOLD + ">[Global] %username%:" + ChatColor.RESET + " %message%"; 
+	private String outgoingFormat = ChatColor.GOLD + "<[Global] %playername%:" + ChatColor.RESET + " %message%";
 	
 	public ForgeIRCBot(Chattery plugin) {
 		this.plugin = plugin;

@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import net.mcforge.chattery.system.Chattery;
 import net.mcforge.chattery.system.WebUtils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -75,7 +76,7 @@ public final class CommandHandler implements CommandExecutor {
 			String[] rules = WebUtils.readContentsToArray(new URL("http://server.mcforge.net/gcrules.txt"));
 
 			for (int i = 0; i < rules.length; i++) {
-				sender.sendMessage(rules[i].replace("&", "§"));
+				sender.sendMessage(rules[i].replace('&', ChatColor.COLOR_CHAR));
 			}
 			rules = null;
 		}
@@ -172,7 +173,7 @@ public final class CommandHandler implements CommandExecutor {
 			String[] info = WebUtils.readContentsToArray(new URL("http://server.mcforge.net/gcinfo.txt"));
 			
 			for (int i = 0; i < info.length; i++) {
-				sender.sendMessage(info[i].replace("&", "§"));
+				sender.sendMessage(info[i].replace('&', ChatColor.COLOR_CHAR));
 			}
 			info = null;
 		}

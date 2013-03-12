@@ -22,6 +22,7 @@ import net.mcforge.chattery.database.SQLite;
 import net.mcforge.chattery.irc.ForgeIRCBot;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Chattery extends JavaPlugin {
@@ -45,8 +46,8 @@ public final class Chattery extends JavaPlugin {
 		}
 		
 		String dataType = getConfig().getString("database.type").toLowerCase(Locale.ENGLISH);
-		
-		switch(dataType) {
+		//a String switch REQUIRES Java 7 make it backwards compatible...
+		/*switch(dataType) {
 			case "mysql":
 				database = new MySQL(this);
 				break;
@@ -56,6 +57,19 @@ public final class Chattery extends JavaPlugin {
 			default:
 				getLogger().warning(dataType + " is an invalid database type! Defaulting to SQLite...");
 				break;
+		}*/
+		
+		if (dataType.equalsIgnoreCase("mysql")) {
+			database = new MySQL(this);
+		} 
+		else if (dataType.equalsIgnoreCase("mysql")) {
+			database = new SQLite(this);
+		}
+		else {
+			getLogger().warning(dataType + " is an invalid database type! Defaulting to SQLite...");
+			//if it is defaulting to SQLite, shouldn't it initialize?
+			//Otherwise NPE
+			database = new SQLite(this);
 		}
 
 		database.init();
@@ -117,8 +131,8 @@ public final class Chattery extends JavaPlugin {
 			form.out().append("# Note that %playername% only works for outgoing messages!");
 			form.out().append("# %message will be replaced by the specified message\r\n");
 			form.out().append("# Your format cannot contain the equals (=) character!\r\n");
-			form.out().append("incoming = §6>[Global] %username%:§f %message%\r\n");
-			form.out().append("outgoing = §6<[Global] %playername%:§f %message%\r\n");
+			form.out().append("incoming = " + ChatColor.GOLD + ">[Global] %username%:" + ChatColor.RESET + " %message%\r\n");
+			form.out().append("outgoing = " + ChatColor.GOLD + "<[Global] %playername%:" + ChatColor.RESET + " %message%\r\n");
 			form.close();
 			return;
 		}
